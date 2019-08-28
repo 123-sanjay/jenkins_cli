@@ -52,10 +52,10 @@ pipeline {
                                 cd "${PROJECT_ROOT}"
 
                                 echo "Creating release folder..."
-                                mkdir -p release/build-${BUILD_ID}
+                                mkdir -p "release/build-${BUILD_ID}"
                                 
                                 echo "Extracting build..."
-                                tar -xzf "${ARTIFACT}" -C release/build-${BUILD_ID}
+                                tar -xzf "${ARTIFACT}" -C "release/build-${BUILD_ID}"
                                 
 
                                 echo "Done"
