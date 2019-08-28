@@ -54,11 +54,11 @@ pipeline {
                 ROOT_DIR=~+
                 RELEASE_DIR=~+/"releases/build-${BUILD_ID}"
 
-                echo "Creating release folder..."
-                mkdir -p "\releases/build-${BUILD_ID}"
+                echo "Creating release folder...";
+                mkdir -p "${RELEASE_DIR}";
 
                 echo "Extracting build..."
-                tar -xzf "${ARTIFACT}" -C "\$RELEASE_DIR";
+                tar -xzf "${ARTIFACT}" -C "{$RELEASE_DIR}";
                 rm "${ARTIFACT}";
 
                 echo "Symlinking release..."
