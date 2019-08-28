@@ -46,14 +46,37 @@ pipeline {
                             sshTransfer(
                                 execCommand: """
                                
-                                mv "./${ARTIFACT}" "${PROJECT_ROOT}"
-                                cd "${PROJECT_ROOT}"
-
-                                echo "Creating release folder..."
-                                mkdir -p "release/build-${BUILD_ID}"
+                                mv "./${ARTIFACT}" "${PROJECT_ROOT}";
+                                cd "${PROJECT_ROOT}";
                                 
-                                echo "Extracting build..."
-                                tar -xzf "${ARTIFACT}" -C "release/build-${BUILD_ID}"
+
+                                echo "Creating release folder...";
+                                mkdir -p "release/build-${BUILD_ID}";
+                                
+                                echo "Extracting build...";
+                                tar -xzf "${ARTIFACT}" -C "release/build-${BUILD_ID}";
+                                rm "${ARTIFACT}";
+                                
+                                echo "Symlinking release..."
+                                rm -f "release/build-${BUILD_ID}/app/etc/env.php"
+                                ln -s "shared/app/etc/env.php" "release/build-${BUILD_ID}/app/etc/env.php"
+
+                                rm -rf "release/build-${BUILD_ID}/pub/media"
+                                ln -s "shared/media" "release/build-${BUILD_ID}/pub/media"
+
+                                rm -rf "release/build-${BUILD_ID}/var"
+                                ln -s "shared/var" "release/build-${BUILD_ID}/var"
+
+                                rm -f public_html
+                                ln -s "release/build-${BUILD_ID}" public_html
+
+                                echo "Running deploy script..."
+                                cd "release/build-${BUILD_ID}"
+                                #sh "\$ROOT_DIR/scripts/deploy.sh" --disable-compilation --disable-static-content-deploy
+
+                                echo "Removing older releases..."
+                                cd "release/build-${BUILD_ID}/.."
+                                ls -tQ | tail -n+2 | xargs --no-run-if-empty sudo rm -rf
                                 
 
                                 echo "Done"
@@ -73,11 +96,11 @@ pipeline {
             SSH_SERVER = 'node-1'
             ENV_NAME = "${BRANCH_NAME == "master" ? "development" : BRANCH_NAME}"
             ARTIFACT = "build-${BRANCH_NAME}-${BUILD_ID}-${ARTIFACT_RANDOM}.tar.gz"
-            PROJECT_ROOT = '/home/shrikant/'
+            PROJECT_ROOT = '/home/shrikant/jenkins_cli'
             SLACK_STARTED = "${env.JOB_NAME} has started deploying to ${BRANCH_NAME}-${env.BUILD_NUMBER}. <${env.BUILD_URL}/console|See details.>"
             SLACK_SUCCESS = "${env.JOB_NAME} has finished deploying to ${BRANCH_NAME}-${env.BUILD_NUMBER}. <${env.BUILD_URL}/console|See details.>"
             SLACK_ERROR = "ERROR: ${env.JOB_NAME} has failed deploying to ${BRANCH_NAME}-${env.BUILD_NUMBER}. <${env.BUILD_URL}/console|See details.>"
-            ROOT_DIR = '/home/shrikant'
+            ROOT_DIR = '/home/shrikant/jenkins_cli'
             RELEASE_DIR = 'releases/build-${BUILD_ID}'
           }
           post {
