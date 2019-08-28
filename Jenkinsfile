@@ -45,9 +45,7 @@ pipeline {
                         transfers: [
                             sshTransfer(
                                 execCommand: """
-                                set -e
-
-                                umask 007
+                               
                                 mv "./${ARTIFACT}" "${PROJECT_ROOT}"
                                 cd "${PROJECT_ROOT}"
 
