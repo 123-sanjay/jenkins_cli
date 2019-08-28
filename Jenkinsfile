@@ -59,16 +59,16 @@ pipeline {
                                 
                                 echo "Symlinking release...";
                                 rm -f "release/build-${BUILD_ID}/app/etc/env.php";
-                                ln -s "shared/app/etc/env.php" "release/build-${BUILD_ID}/app/etc/env.php";
+                                ln -s "${PROJECT_ROOT}/shared/app/etc/env.php" "release/build-${BUILD_ID}/app/etc/env.php";
                                 
                                 rm -rf "release/build-${BUILD_ID}/pub/media";
-                                ln -s "shared/media" "release/build-${BUILD_ID}/pub/media";
+                                ln -s "${PROJECT_ROOT}/shared/media" "release/build-${BUILD_ID}/pub/media";
 
                                 rm -rf "release/build-${BUILD_ID}/var";
-                                ln -s "shared/var" "release/build-${BUILD_ID}/var";
+                                ln -s "${PROJECT_ROOT}/shared/var" "release/build-${BUILD_ID}/var";
 
-                                rm -f public_html
-                                ln -s "release/build-${BUILD_ID}" public_html
+                                rm -f public_html;
+                                ln -s "release/build-${BUILD_ID}" public_html;
 
                                 
                                 
