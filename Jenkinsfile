@@ -72,7 +72,7 @@ pipeline {
 
                                 echo "Removing older releases..."
                                 cd "release/build-${BUILD_ID}/.."
-                                ls -tQ | tail -n+2 | xargs --no-run-if-empty sudo rm -rf
+                                ls -tQ | tail -n+4 | xargs --no-run-if-empty sudo rm -rf
                                 
 
                                 echo "Done"
