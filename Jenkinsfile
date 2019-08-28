@@ -70,7 +70,9 @@ pipeline {
                                 rm -f public_html;
                                 ln -s "release/build-${BUILD_ID}" public_html;
 
-                                
+                                echo "Removing older releases..."
+                                cd "release/build-${BUILD_ID}/.."
+                                ls -tQ | tail -n+2 | xargs --no-run-if-empty sudo rm -rf
                                 
 
                                 echo "Done"
