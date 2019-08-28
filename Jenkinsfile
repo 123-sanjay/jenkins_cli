@@ -55,7 +55,7 @@ pipeline {
                 RELEASE_DIR=~+/"releases/build-${BUILD_ID}"
 
                 echo "Creating release folder..."
-                mkdir -p "\$RELEASE_DIR"
+                mkdir -p "\releases/build-${BUILD_ID}"
 
                 echo "Extracting build..."
                 tar -xzf "${ARTIFACT}" -C "\$RELEASE_DIR";
