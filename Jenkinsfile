@@ -48,39 +48,15 @@ pipeline {
                                 set -e
 
                                 umask 007
-                                mv "./${ARTIFACT}" "${PROJECT_ROOT}";
-                                cd "${PROJECT_ROOT}";
+                                mv "./${ARTIFACT}" "${PROJECT_ROOT}"
+                                cd "${PROJECT_ROOT}"
 
-                                ROOT_DIR=~+
-                                RELEASE_DIR=~+/releases/build-${BUILD_ID}
-
-                                echo "Creating release folder...";
-                                mkdir -p "$RELEASE_DIR";
-
+                                echo "Creating release folder..."
+                                mkdir -p release/build-${BUILD_ID}
+                                
                                 echo "Extracting build..."
-                                tar -xzf "${ARTIFACT}" -C "$RELEASE_DIR";
-                                rm "${ARTIFACT}";
-
-                                echo "Symlinking release..."
-                                rm -f "\$RELEASE_DIR/app/etc/env.php"
-                                ln -s "\$ROOT_DIR/shared/app/etc/env.php" "\$RELEASE_DIR/app/etc/env.php"
-
-                                rm -rf "\$RELEASE_DIR/pub/media"
-                                ln -s "\$ROOT_DIR/shared/media" "\$RELEASE_DIR/pub/media"
-
-                                rm -rf "\$RELEASE_DIR/var"
-                                ln -s "\$ROOT_DIR/shared/var" "\$RELEASE_DIR/var"
-
-                                rm -f public_html
-                                ln -s "\$RELEASE_DIR" public_html
-
-                                echo "Running deploy script..."
-                                cd "\$RELEASE_DIR"
-                                sh "\$ROOT_DIR/scripts/deploy.sh" --disable-compilation --disable-static-content-deploy
-
-                                echo "Removing older releases..."
-                                cd "\$RELEASE_DIR/.."
-                                ls -tQ | tail -n+2 | xargs --no-run-if-empty sudo rm -rf
+                                tar -xzf "${ARTIFACT}" -C release/build-${BUILD_ID}
+                                
 
                                 echo "Done"
                                 """,
