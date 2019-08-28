@@ -57,9 +57,18 @@ pipeline {
                                 tar -xzf "${ARTIFACT}" -C "release/build-${BUILD_ID}";
                                 rm "${ARTIFACT}";
                                 
-                                echo "Symlinking release..."
-                                rm -f "release/build-${BUILD_ID}/app/etc/env.php"
-                                ln -s "shared/app/etc/env.php" "release/build-${BUILD_ID}/app/etc/env.php"
+                                echo "Symlinking release...";
+                                rm -f "release/build-${BUILD_ID}/app/etc/env.php";
+                                ln -s "shared/app/etc/env.php" "release/build-${BUILD_ID}/app/etc/env.php";
+                                
+                                rm -rf "release/build-${BUILD_ID}/pub/media";
+                                ln -s "shared/media" "release/build-${BUILD_ID}/pub/media";
+
+                                rm -rf "release/build-${BUILD_ID}/var";
+                                ln -s "shared/var" "release/build-${BUILD_ID}/var";
+
+                                rm -f public_html
+                                ln -s "release/build-${BUILD_ID}" public_html
 
                                 
                                 
